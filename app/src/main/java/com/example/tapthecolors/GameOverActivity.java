@@ -2,25 +2,26 @@ package com.example.tapthecolors;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class InfoActivity extends AppCompatActivity {
+public class GameOverActivity extends AppCompatActivity {
 
-    Button zurueck;
+    Button fortfahren;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_game_over);
 
-        zurueck = findViewById(R.id.zurueckButton);
+        fortfahren = findViewById(R.id.fortfahrenButton);
 
-        Intent mainActivity = new Intent(InfoActivity.this, MainActivity.class);
+        Intent mainActivity = new Intent(GameOverActivity.this, MainActivity.class);
 
-        zurueck.setOnClickListener(new View.OnClickListener() {
+        fortfahren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(mainActivity);
