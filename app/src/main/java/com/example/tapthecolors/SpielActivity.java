@@ -64,6 +64,7 @@ public class SpielActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         startActivity(gameOverActivity);
+                        // dies ist ein test für das branchen
                     }
                 });
 
