@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.tapthecolors.services.ColorGenerator;
+import com.example.tapthecolors.services.schwererColorGenerator;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -40,20 +42,28 @@ public class SpielActivity extends AppCompatActivity {
 
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
-        ColorGenerator colorGenerator = new ColorGenerator();
+        schwererColorGenerator colorGenerator = new schwererColorGenerator();
 
         Random random = new Random();
-        Integer indexRichtigeFarbe = random.nextInt(9);
+        Integer indexRichtigerButton = random.nextInt(9);
         String richtigeFarbeHex = "#FFFFFF";
 
         Intent spielActivity = new Intent(SpielActivity.this, SpielActivity.class);
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
+        Integer counter = 0;
+
+        ArrayList<String> neunFarben = colorGenerator.Farbe(100);
+
+        for (int i = 0; i < buttons.length; i++){
+            Log.println(Log.DEBUG, "huaraChabis", String.valueOf(neunFarben.get(i)));
+            buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
+        }
+        view.setBackgroundColor(Integer.parseInt(neunFarben.get(indexRichtigerButton)));
+
         for (int i = 0; i < buttons.length; i++) {
-            String farbe = (colorGenerator.Farbe());
             // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
-            if (i == indexRichtigeFarbe) {
-                richtigeFarbeHex = farbe;
+            if (view.getBackground() == buttons[i].getBackground()) {
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -61,6 +71,7 @@ public class SpielActivity extends AppCompatActivity {
                     }
                 });
             } else {
+                // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -70,8 +81,7 @@ public class SpielActivity extends AppCompatActivity {
                 });
 
             }
-            buttons[i].setBackgroundColor(Color.parseColor(farbe));
+            // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(0)));
         }
-        view.setBackgroundColor(Color.parseColor(richtigeFarbeHex));
     }
 }
