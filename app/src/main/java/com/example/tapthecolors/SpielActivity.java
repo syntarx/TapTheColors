@@ -45,35 +45,31 @@ public class SpielActivity extends AppCompatActivity {
         Integer indexRichtigeFarbe = random.nextInt(9);
         String richtigeFarbeHex = "#FFFFFF";
 
-        for (int i = 0; i < buttons.length; i++) {
-            String farbe = colorGenerator.Farbe();
-            Log.println(Log.DEBUG,"debugging", String.valueOf(farbe));
-            if (i == indexRichtigeFarbe) {
-                richtigeFarbeHex = farbe;
-            }
-            buttons[i].setBackgroundColor(Color.parseColor(farbe));
-            buttons[i].;
-        }
-
-        view.setBackgroundColor(Color.parseColor(richtigeFarbeHex));
-
-        ActionListener actionListener = new ActionListener()
-        {
-            public void actionPerformed(ActionEvent actionEvent) {
-                JButton button = (JButton)actionEvent.getSource();
-                String label = button.getLabel(); //Deprecated
-
-                String label2 = button.getText();
-            }
-        };
-
+        Intent spielActivity = new Intent(SpielActivity.this, SpielActivity.class);
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
-/*        option1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(gameOverActivity);
+        for (int i = 0; i < buttons.length; i++) {
+            String farbe = colorGenerator.Farbe();
+            Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
+            if (i == indexRichtigeFarbe) {
+                richtigeFarbeHex = farbe;
+                buttons[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(spielActivity);
+                    }
+                });
+            } else {
+                buttons[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(gameOverActivity);
+                    }
+                });
+
             }
-        });*/
+            buttons[i].setBackgroundColor(Color.parseColor(farbe));
+        }
+        view.setBackgroundColor(Color.parseColor(richtigeFarbeHex));
     }
 }
