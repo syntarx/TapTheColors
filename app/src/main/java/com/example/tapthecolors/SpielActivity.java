@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.example.tapthecolors.services.ColorGenerator;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 
 public class SpielActivity extends AppCompatActivity {
@@ -49,8 +50,8 @@ public class SpielActivity extends AppCompatActivity {
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
         for (int i = 0; i < buttons.length; i++) {
-            String farbe = colorGenerator.Farbe();
-            Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
+            String farbe = (colorGenerator.Farbe());
+            // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
             if (i == indexRichtigeFarbe) {
                 richtigeFarbeHex = farbe;
                 buttons[i].setOnClickListener(new View.OnClickListener() {
