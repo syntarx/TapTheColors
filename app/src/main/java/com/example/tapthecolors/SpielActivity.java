@@ -80,7 +80,7 @@ public class SpielActivity extends AppCompatActivity {
                         startActivity(gameOverActivity);
                     }
                 });
-
+// test
             }
             // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(0)));
         }
