@@ -1,9 +1,11 @@
 package com.example.tapthecolors.services;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 
 
 public class schwererColorGenerator {
@@ -23,9 +25,9 @@ public class schwererColorGenerator {
 
 
         for (int j = 1; j <= 8; j++) {
-            Integer R = random.nextInt(abweichung) +  basisRGB[0] % 255;
-            Integer G = random.nextInt(abweichung) +  basisRGB[1] % 255;
-            Integer B = random.nextInt(abweichung) +  basisRGB[2] % 255;
+            Integer R = (random.nextInt(abweichung) +  basisRGB[0]) % 255;
+            Integer G = (random.nextInt(abweichung) +  254) % 255;
+            Integer B = (random.nextInt(abweichung) +  basisRGB[2]) % 255;
             neunHexWerte.add(String.format("#%02x%02x%02x", R, G, B));
         }
 
@@ -59,3 +61,4 @@ public class schwererColorGenerator {
 
 
 // https://stackoverflow.com/questions/35459454/java-random-color-string
+// https://stackoverflow.com/questions/3607858/convert-a-rgb-color-value-to-a-hexadecimal-string
