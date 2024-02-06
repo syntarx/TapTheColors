@@ -59,7 +59,8 @@ public class SpielActivity extends AppCompatActivity {
             Log.println(Log.DEBUG, "huaraChabis", String.valueOf(neunFarben.get(i)));
             buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
         }
-        view.setBackgroundColor(Integer.parseInt(neunFarben.get(indexRichtigerButton)));
+        Log.println(Log.DEBUG, "richtige Farbe", neunFarben.get(indexRichtigerButton));
+        view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
 
         for (int i = 0; i < buttons.length; i++) {
             // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
