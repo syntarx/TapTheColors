@@ -60,6 +60,7 @@ public class SpielActivity extends AppCompatActivity {
             buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
         }
         Log.println(Log.DEBUG, "richtige Farbe", neunFarben.get(indexRichtigerButton));
+        Log.println(Log.DEBUG, "richtige Farbe ID", String.valueOf(indexRichtigerButton));
         view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
 
         for (int i = 0; i < buttons.length; i++) {
