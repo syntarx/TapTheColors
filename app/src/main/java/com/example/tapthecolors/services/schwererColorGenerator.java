@@ -26,9 +26,9 @@ public class schwererColorGenerator {
 
         for (int j = 1; j <= 8; j++) {
             Integer R = (random.nextInt(abweichung) +  basisRGB[0]) % 255;
-            Integer G = (random.nextInt(abweichung) +  254) % 255;
+            Integer G = (random.nextInt(abweichung) +  basisRGB[1]) % 255;
             Integer B = (random.nextInt(abweichung) +  basisRGB[2]) % 255;
-            neunHexWerte.add(String.format("#%02x%02x%02x", R, G, B));
+            neunHexWerte.add(String.format("#%02X%02X%02X", R, G, B));
         }
 
 

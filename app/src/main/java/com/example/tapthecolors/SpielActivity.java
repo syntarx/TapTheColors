@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
@@ -53,7 +54,9 @@ public class SpielActivity extends AppCompatActivity {
 
         Integer counter = 0;
 
-        ArrayList<String> neunFarben = colorGenerator.Farbe(100);
+        ArrayList<String> neunFarben = colorGenerator.Farbe(10);
+
+        Log.println(Log.DEBUG, "Neun Farben", String.valueOf(neunFarben));
 
         for (int i = 0; i < buttons.length; i++){
             Log.println(Log.DEBUG, "huaraChabis", String.valueOf(neunFarben.get(i)));
@@ -63,9 +66,19 @@ public class SpielActivity extends AppCompatActivity {
         Log.println(Log.DEBUG, "richtige Farbe ID", String.valueOf(indexRichtigerButton));
         view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
 
+        // drawble to hex
+
+        ColorDrawable viewColor = (ColorDrawable) view.getBackground();
+        int colorId = viewColor.getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & colorId));
+        Log.println(Log.DEBUG, "Hintergrundfarbe als HEX", hexColor);
+        Log.println(Log.DEBUG, "Buttons", neunFarben.get(0));
+
+
         for (int i = 0; i < buttons.length; i++) {
             // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
-            if (view.getBackground() == buttons[i].getBackground()) {
+            if (hexColor == neunFarben.get(i)) {
+                Log.println(Log.DEBUG, "Farbe vergleichen richtig", hexColor + "is equal to" + neunFarben.get(i));
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,7 +93,7 @@ public class SpielActivity extends AppCompatActivity {
                         startActivity(gameOverActivity);
                     }
                 });
-
+// test
             }
             // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(0)));
         }
