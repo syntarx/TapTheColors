@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
@@ -79,7 +80,6 @@ public class SpielActivity extends AppCompatActivity {
 
         Random random = new Random();
         Integer indexRichtigerButton = random.nextInt(9);
-        String richtigeFarbeHex = "#FFFFFF";
 
         Intent spielActivity = new Intent(SpielActivity.this, SpielActivity.class);
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
@@ -121,7 +121,7 @@ public class SpielActivity extends AppCompatActivity {
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is equal to " + neunFarben.get(finalI));
+                        Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is not equal to " + neunFarben.get(finalI));
                         sendNotification();
                         startActivity(gameOverActivity);
                     }
