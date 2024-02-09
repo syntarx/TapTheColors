@@ -1,14 +1,11 @@
 package com.example.tapthecolors.services;
 
-import android.graphics.Color;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 
 
-public class schwererColorGenerator {
+public class SchwererColorGenerator {
     public ArrayList<String> Farbe(Integer abweichung){
 
         Random random = new Random();
@@ -53,7 +50,7 @@ public class schwererColorGenerator {
         String newHex = String.format("#%02x%02x%02x", newRGB[0], newRGB[1], newRGB[2]);
         neunHexWerte.add(newHex);*/
 
-        Log.println(Log.DEBUG, "debugging", String.valueOf(neunHexWerte));
+        // Log.println(Log.DEBUG, "debugging", String.valueOf(neunHexWerte));
 
         return neunHexWerte;
     }

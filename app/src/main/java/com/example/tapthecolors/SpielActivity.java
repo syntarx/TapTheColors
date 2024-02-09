@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.tapthecolors.services.schwererColorGenerator;
+import com.example.tapthecolors.services.SchwererColorGenerator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,19 +26,19 @@ public class SpielActivity extends AppCompatActivity {
         setContentView(R.layout.activity_spiel);
 
         // loop
-        buttons[0] = findViewById(R.id.button4);
+        buttons[0] = findViewById(R.id.button);
         buttons[1] = findViewById(R.id.button1);
-        buttons[2] = findViewById(R.id.button5);
-        buttons[3] = findViewById(R.id.button7);
-        buttons[4] = findViewById(R.id.button3);
-        buttons[5] = findViewById(R.id.button2);
-        buttons[6] = findViewById(R.id.button8);
-        buttons[7] = findViewById(R.id.button6);
-        buttons[8] = findViewById(R.id.button);
+        buttons[2] = findViewById(R.id.button2);
+        buttons[3] = findViewById(R.id.button3);
+        buttons[4] = findViewById(R.id.button4);
+        buttons[5] = findViewById(R.id.button5);
+        buttons[6] = findViewById(R.id.button6);
+        buttons[7] = findViewById(R.id.button7);
+        buttons[8] = findViewById(R.id.button8);
 
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
-        schwererColorGenerator colorGenerator = new schwererColorGenerator();
+        SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
 
         Random random = new Random();
         Integer indexRichtigerButton = random.nextInt(9);
@@ -54,10 +54,10 @@ public class SpielActivity extends AppCompatActivity {
         Log.println(Log.DEBUG, "Neun Farben", String.valueOf(neunFarben));
 
         for (int i = 0; i < buttons.length; i++){
-            Log.println(Log.DEBUG, "debugging alle Farben", "Farbe " + i + " " + String.valueOf(neunFarben.get(i)));
+            Log.println(Log.DEBUG, "debugging alle Farben", "Farbe " + i + ": " + String.valueOf(neunFarben.get(i)));
             buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
         }
-        Log.println(Log.DEBUG, "richtige Farbe ID", String.valueOf(indexRichtigerButton));
+        Log.println(Log.DEBUG, "richtige Farbe ID", "ID von richtiger Farbe: " + String.valueOf(indexRichtigerButton));
         view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
 
         // drawble to hex
@@ -65,14 +65,12 @@ public class SpielActivity extends AppCompatActivity {
         ColorDrawable viewColor = (ColorDrawable) view.getBackground();
         int colorId = viewColor.getColor();
         String hexColor = String.format("#%06X", (0xFFFFFF & colorId));
-        Log.println(Log.DEBUG, "Hintergrundfarbe als HEX", hexColor);
-        Log.println(Log.DEBUG, "Buttons", neunFarben.get(0));
-
+        Log.println(Log.DEBUG, "Hintergrundfarbe", "richtige Farbe: " + hexColor);
 
         for (int i = 0; i < buttons.length; i++) {
             // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
             if (hexColor.equals(neunFarben.get(i))) {
-                Log.println(Log.DEBUG, "Farbe vergleichen richtig", hexColor + " is equal to " + neunFarben.get(i));
+                Log.println(Log.DEBUG, "Farbe vergleichen", hexColor + " is equal to " + neunFarben.get(i));
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
