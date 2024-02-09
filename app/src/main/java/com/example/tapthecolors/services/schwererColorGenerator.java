@@ -20,7 +20,7 @@ public class schwererColorGenerator {
         for (int i = 0; i < 3; i++) {
             basisRGB[i] = random.nextInt(255);
         }
-        String basisHex = String.format("#%02x%02x%02x", basisRGB[0], basisRGB[1], basisRGB[2]);
+        String basisHex = String.format("#%02X%02X%02X", basisRGB[0], basisRGB[1], basisRGB[2]);
         neunHexWerte.add(basisHex);
 
 
