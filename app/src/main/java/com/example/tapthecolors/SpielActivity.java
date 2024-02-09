@@ -3,7 +3,6 @@ package com.example.tapthecolors;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
-
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,9 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.tapthecolors.services.ColorGenerator;
+import com.example.tapthecolors.services.SchwererColorGenerator;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SpielActivity extends AppCompatActivity {
@@ -55,6 +54,7 @@ public class SpielActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spiel);
+      
 
         this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -62,33 +62,52 @@ public class SpielActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
-
+        // loop
         buttons[0] = findViewById(R.id.button);
-        buttons[1] = findViewById(R.id.button2);
-        buttons[2] = findViewById(R.id.button3);
-        buttons[3] = findViewById(R.id.button4);
-        buttons[4] = findViewById(R.id.button5);
-        buttons[5] = findViewById(R.id.button6);
-        buttons[6] = findViewById(R.id.button7);
-        buttons[7] = findViewById(R.id.button8);
-        buttons[8] = findViewById(R.id.button9);
+        buttons[1] = findViewById(R.id.button1);
+        buttons[2] = findViewById(R.id.button2);
+        buttons[3] = findViewById(R.id.button3);
+        buttons[4] = findViewById(R.id.button4);
+        buttons[5] = findViewById(R.id.button5);
+        buttons[6] = findViewById(R.id.button6);
+        buttons[7] = findViewById(R.id.button7);
+        buttons[8] = findViewById(R.id.button8);
 
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
-        ColorGenerator colorGenerator = new ColorGenerator();
+        SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
 
         Random random = new Random();
-        Integer indexRichtigeFarbe = random.nextInt(9);
+        Integer indexRichtigerButton = random.nextInt(9);
         String richtigeFarbeHex = "#FFFFFF";
 
         Intent spielActivity = new Intent(SpielActivity.this, SpielActivity.class);
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
+        Integer counter = 0;
+
+        ArrayList<String> neunFarben = colorGenerator.Farbe(255);
+
+        Log.println(Log.DEBUG, "Neun Farben", String.valueOf(neunFarben));
+
+        for (int i = 0; i < buttons.length; i++){
+            Log.println(Log.DEBUG, "debugging alle Farben", "Farbe " + i + ": " + String.valueOf(neunFarben.get(i)));
+            buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
+        }
+        Log.println(Log.DEBUG, "richtige Farbe ID", "ID von richtiger Farbe: " + String.valueOf(indexRichtigerButton));
+        view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
+
+        // drawble to hex
+
+        ColorDrawable viewColor = (ColorDrawable) view.getBackground();
+        int colorId = viewColor.getColor();
+        String hexColor = String.format("#%06X", (0xFFFFFF & colorId));
+        Log.println(Log.DEBUG, "Hintergrundfarbe", "richtige Farbe: " + hexColor);
+
         for (int i = 0; i < buttons.length; i++) {
-            String farbe = colorGenerator.Farbe();
-            Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
-            if (i == indexRichtigeFarbe) {
-                richtigeFarbeHex = farbe;
+            // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
+            if (hexColor.equals(neunFarben.get(i))) {
+                Log.println(Log.DEBUG, "Farbe vergleichen", hexColor + " is equal to " + neunFarben.get(i));
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -97,17 +116,19 @@ public class SpielActivity extends AppCompatActivity {
                     }
                 });
             } else {
+                // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
+                int finalI = i;
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is equal to " + neunFarben.get(finalI));
                         sendNotification();
                         startActivity(gameOverActivity);
                     }
                 });
-
+// test
             }
-            buttons[i].setBackgroundColor(Color.parseColor(farbe));
+            // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(0)));
         }
-        view.setBackgroundColor(Color.parseColor(richtigeFarbeHex));
     }
 }
