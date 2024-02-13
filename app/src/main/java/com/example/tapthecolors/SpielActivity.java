@@ -1,5 +1,7 @@
 package com.example.tapthecolors;
 
+import static com.example.tapthecolors.services.PreferencesData.saveInt;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
@@ -20,7 +22,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.tapthecolors.services.PreferencesData;
 import com.example.tapthecolors.services.SchwererColorGenerator;
+import com.example.tapthecolors.services.SchwierigkeitsGrad;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,6 +32,7 @@ import java.util.Random;
 public class SpielActivity extends AppCompatActivity {
 
     Button[] buttons = new Button[9];
+    PreferencesData preferencesData = new PreferencesData();
 
     private NotificationManager notificationManager;
     private static final String CHANNEL_ID = "defaultChannel";
@@ -51,11 +56,31 @@ public class SpielActivity extends AppCompatActivity {
         }
     }
 
+    public void incrementCounter(Context context, String counterKey) {
+        int counter = preferencesData.getInt(context, counterKey, 0);
+
+        counter++;
+
+        preferencesData.saveInt(context, counterKey, counter);
+    }
+
+    public int getCounter(Context context, String counterKey) {
+        return preferencesData.getInt(context, counterKey, 0);
+    }
+
+    public void resetCounter(Context context, String counterKey) {
+        int counter = preferencesData.getInt(context, counterKey, 0);
+
+        counter = 0;
+
+        preferencesData.saveInt(context, counterKey, counter);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spiel);
-      
 
         this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -77,6 +102,7 @@ public class SpielActivity extends AppCompatActivity {
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
         SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
+        SchwierigkeitsGrad schwierigkeitsGrad = new SchwierigkeitsGrad();
 
         Random random = new Random();
         Integer indexRichtigerButton = random.nextInt(9);
@@ -84,9 +110,14 @@ public class SpielActivity extends AppCompatActivity {
         Intent spielActivity = new Intent(SpielActivity.this, SpielActivity.class);
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
-        Integer counter = 0;
+        String counter = "my_counter";
+        Integer anzahlRunden = getCounter(this, counter);
 
-        ArrayList<String> neunFarben = colorGenerator.Farbe(255);
+        Integer abweichung =schwierigkeitsGrad.Schwierigkeit(anzahlRunden);
+
+        Log.println(Log.DEBUG, "abweichung", String.valueOf(abweichung));
+
+        ArrayList<String> neunFarben = colorGenerator.Farbe(abweichung);
 
         Log.println(Log.DEBUG, "Neun Farben", String.valueOf(neunFarben));
 
@@ -97,38 +128,39 @@ public class SpielActivity extends AppCompatActivity {
         Log.println(Log.DEBUG, "richtige Farbe ID", "ID von richtiger Farbe: " + String.valueOf(indexRichtigerButton));
         view.setBackgroundColor(Color.parseColor(neunFarben.get(indexRichtigerButton)));
 
-        // drawble to hex
-
         ColorDrawable viewColor = (ColorDrawable) view.getBackground();
         int colorId = viewColor.getColor();
         String hexColor = String.format("#%06X", (0xFFFFFF & colorId));
         Log.println(Log.DEBUG, "Hintergrundfarbe", "richtige Farbe: " + hexColor);
 
         for (int i = 0; i < buttons.length; i++) {
-            // Log.println(Log.DEBUG, "debugging", String.valueOf(farbe));
             if (hexColor.equals(neunFarben.get(i))) {
                 Log.println(Log.DEBUG, "Farbe vergleichen", hexColor + " is equal to " + neunFarben.get(i));
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         vibrate();
+                        String counter = "my_counter";
+                        incrementCounter(v.getContext(), counter);
                         startActivity(spielActivity);
+                        int currentCounterValue = getCounter(v.getContext(), counter);
+                        Log.println(Log.DEBUG, "counter", String.valueOf(currentCounterValue));
                     }
                 });
             } else {
-                // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(i)));
                 int finalI = i;
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is not equal to " + neunFarben.get(finalI));
                         sendNotification();
+                        String counter = "my_counter";
+                        resetCounter(v.getContext(), counter);
                         startActivity(gameOverActivity);
                     }
                 });
-// test
             }
-            // buttons[i].setBackgroundColor(Color.parseColor(neunFarben.get(0)));
         }
+        // Log.println(Log.DEBUG, "counter", getCounter(this, currentCounterValue));
     }
 }
