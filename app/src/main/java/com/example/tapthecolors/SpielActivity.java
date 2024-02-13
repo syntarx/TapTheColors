@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.tapthecolors.services.DemoSchwierigkeit;
 import com.example.tapthecolors.services.PreferencesData;
 import com.example.tapthecolors.services.SchwererColorGenerator;
 import com.example.tapthecolors.services.SchwierigkeitsGrad;
@@ -102,7 +103,10 @@ public class SpielActivity extends AppCompatActivity {
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
         SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
+
+        // Zwei verschiedene Schwierigkeitsgrad, Demo ist selbsterklärend nur fpr die Demo
         SchwierigkeitsGrad schwierigkeitsGrad = new SchwierigkeitsGrad();
+        DemoSchwierigkeit demoSchwierigkeit = new DemoSchwierigkeit();
 
         Random random = new Random();
         Integer indexRichtigerButton = random.nextInt(9);
@@ -113,7 +117,7 @@ public class SpielActivity extends AppCompatActivity {
         String counter = "my_counter";
         Integer anzahlRunden = getCounter(this, counter);
 
-        Integer abweichung =schwierigkeitsGrad.Schwierigkeit(anzahlRunden);
+        Integer abweichung =demoSchwierigkeit.Schwierigkeit(anzahlRunden);
 
         Log.println(Log.DEBUG, "abweichung", String.valueOf(abweichung));
 
