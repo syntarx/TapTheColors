@@ -4,6 +4,7 @@ public class SchwierigkeitsGrad {
     public Integer Schwierigkeit(Integer counter) {
 
         Integer abweichung = 255;
+        Integer Zeit = 15;
 
         if (counter < 10) {
             return abweichung;

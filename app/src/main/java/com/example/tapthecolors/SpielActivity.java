@@ -26,9 +26,11 @@ import com.example.tapthecolors.services.DemoSchwierigkeit;
 import com.example.tapthecolors.services.PreferencesData;
 import com.example.tapthecolors.services.SchwererColorGenerator;
 import com.example.tapthecolors.services.SchwierigkeitsGrad;
+import com.example.tapthecolors.services.Timer;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 
 public class SpielActivity extends AppCompatActivity {
 
@@ -82,6 +84,10 @@ public class SpielActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spiel);
+
+        Timer timer = new Timer(this, findViewById(R.id.textView6));
+        timer.startCountDown();
+
 
         this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
