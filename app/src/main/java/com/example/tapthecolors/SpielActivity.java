@@ -1,19 +1,14 @@
 package com.example.tapthecolors;
 
-import static com.example.tapthecolors.services.PreferencesData.saveInt;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
-import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -23,8 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.tapthecolors.services.Counter;
 import com.example.tapthecolors.services.DemoSchwierigkeit;
-import com.example.tapthecolors.services.PreferencesData;
 import com.example.tapthecolors.services.SchwererColorGenerator;
 import com.example.tapthecolors.services.SchwierigkeitsGrad;
 import com.example.tapthecolors.services.Timer;
@@ -36,7 +31,6 @@ import java.util.Random;
 public class SpielActivity extends AppCompatActivity {
 
     Button[] buttons = new Button[9];
-    PreferencesData preferencesData = new PreferencesData();
 
     private NotificationManager notificationManager;
     private static final String CHANNEL_ID = "defaultChannel";
@@ -59,27 +53,6 @@ public class SpielActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void incrementCounter(Context context, String counterKey) {
-        int counter = preferencesData.getInt(context, counterKey, 0);
-
-        counter++;
-
-        preferencesData.saveInt(context, counterKey, counter);
-    }
-
-    public int getCounter(Context context, String counterKey) {
-        return preferencesData.getInt(context, counterKey, 0);
-    }
-
-    public void resetCounter(Context context, String counterKey) {
-        int counter = preferencesData.getInt(context, counterKey, 0);
-
-        counter = 0;
-
-        preferencesData.saveInt(context, counterKey, counter);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +91,8 @@ public class SpielActivity extends AppCompatActivity {
 
         ConstraintLayout view = findViewById(R.id.activity_spiel);
 
+        Counter zaehler = new Counter();
+
         SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
 
         // Zwei verschiedene Schwierigkeitsgrad, Demo ist selbsterklärend nur für die Demo
@@ -131,9 +106,9 @@ public class SpielActivity extends AppCompatActivity {
         Intent gameOverActivity = new Intent(SpielActivity.this, GameOverActivity.class);
 
         String counter = "my_counter";
-        Integer anzahlRunden = getCounter(this, counter);
+        Integer anzahlRunden = zaehler.getCounter(this, counter);
 
-        Integer abweichung =demoSchwierigkeit.Schwierigkeit(anzahlRunden);
+        Integer abweichung = demoSchwierigkeit.schwierigkeit(anzahlRunden);
 
         Log.println(Log.DEBUG, "abweichung", String.valueOf(abweichung));
 
@@ -161,11 +136,10 @@ public class SpielActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         vibrate();
                         String counter = "my_counter";
-                        incrementCounter(v.getContext(), counter);
+                        zaehler.incrementCounter(v.getContext(), counter);
                         spielActivity.putExtra("restZeit", restZeit);
                         startActivity(spielActivity);
-                        int currentCounterValue = getCounter(v.getContext(), counter);
-                        Log.println(Log.DEBUG, "timer", String.valueOf(restZeit));
+                        int currentCounterValue = zaehler.getCounter(v.getContext(), counter);;
                         timer.stopCountDown();
 
                         Log.println(Log.DEBUG, "counter", String.valueOf(currentCounterValue));
@@ -178,7 +152,7 @@ public class SpielActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         sendNotification();
                         String counter = "my_counter";
-                        resetCounter(v.getContext(), counter);
+                        zaehler.resetCounter(v.getContext(), counter);
                         startActivity(gameOverActivity);
                         timer.stopCountDown();
 

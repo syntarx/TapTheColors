@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/spielenButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="287dp"
+        android:layout_height="128dp"
         android:background="@android:color/transparent"
         android:text="Spielen"
         android:textColor="#801E1E1E"

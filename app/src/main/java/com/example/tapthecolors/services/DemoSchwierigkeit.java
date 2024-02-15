@@ -1,7 +1,7 @@
 package com.example.tapthecolors.services;
 
 public class DemoSchwierigkeit {
-    public Integer Schwierigkeit(Integer counter) {
+    public Integer schwierigkeit(Integer counter) {
 
         Integer abweichung = 255;
 
