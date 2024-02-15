@@ -21,6 +21,7 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.tapthecolors.services.DemoSchwierigkeit;
 import com.example.tapthecolors.services.PreferencesData;
@@ -87,13 +88,22 @@ public class SpielActivity extends AppCompatActivity {
 
         Timer timer = new Timer(this, findViewById(R.id.textView6));
         timer.startCountDown();
-
+        Double restZeit = Timer.getRemainingTimeMillis();
 
         this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
+
+        Double restZeitUebergeben = 0.0;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            restZeitUebergeben = extras.getDouble("restZeit");
+        }
+        TextView score = findViewById(R.id.textView2);
+        String stringScore = Double.toString(restZeitUebergeben);
+        score.setText(stringScore);
 
         // loop
         buttons[0] = findViewById(R.id.button);
@@ -110,7 +120,7 @@ public class SpielActivity extends AppCompatActivity {
 
         SchwererColorGenerator colorGenerator = new SchwererColorGenerator();
 
-        // Zwei verschiedene Schwierigkeitsgrad, Demo ist selbsterklärend nur fpr die Demo
+        // Zwei verschiedene Schwierigkeitsgrad, Demo ist selbsterklärend nur für die Demo
         SchwierigkeitsGrad schwierigkeitsGrad = new SchwierigkeitsGrad();
         DemoSchwierigkeit demoSchwierigkeit = new DemoSchwierigkeit();
 
@@ -152,8 +162,12 @@ public class SpielActivity extends AppCompatActivity {
                         vibrate();
                         String counter = "my_counter";
                         incrementCounter(v.getContext(), counter);
+                        spielActivity.putExtra("restZeit", restZeit);
                         startActivity(spielActivity);
                         int currentCounterValue = getCounter(v.getContext(), counter);
+                        Log.println(Log.DEBUG, "timer", String.valueOf(restZeit));
+                        timer.stopCountDown();
+
                         Log.println(Log.DEBUG, "counter", String.valueOf(currentCounterValue));
                     }
                 });
@@ -162,11 +176,13 @@ public class SpielActivity extends AppCompatActivity {
                 buttons[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is not equal to " + neunFarben.get(finalI));
                         sendNotification();
                         String counter = "my_counter";
                         resetCounter(v.getContext(), counter);
                         startActivity(gameOverActivity);
+                        timer.stopCountDown();
+
+                        Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is not equal to " + neunFarben.get(finalI));
                     }
                 });
             }

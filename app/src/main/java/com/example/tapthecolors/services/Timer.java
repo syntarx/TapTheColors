@@ -13,6 +13,8 @@ import java.text.NumberFormat;
 public class Timer {
     private TextView textView;
     private Context context;
+    private CountDownTimer countDownTimer;
+    private static long remainingTimeMillis;
 
     public Timer(Context context, TextView textView) {
         this.context = context;
@@ -20,10 +22,15 @@ public class Timer {
     }
 
     public void startCountDown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stoppe den Timer, wenn er bereits läuft
+        }
+
         Intent gameOverIntent = new Intent(context, GameOverActivity.class);
 
-        new CountDownTimer(10000, 1000) {
+        countDownTimer = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
+                remainingTimeMillis = millisUntilFinished; // Aktualisiere die verbleibende Zeit
                 NumberFormat f = new DecimalFormat("00");
                 long hour = (millisUntilFinished / 3600000) % 24;
                 long min = (millisUntilFinished / 60000) % 60;
@@ -36,5 +43,15 @@ public class Timer {
                 context.startActivity(gameOverIntent);
             }
         }.start();
+    }
+
+    public void stopCountDown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Stoppe den Timer
+        }
+    }
+
+    public static double getRemainingTimeMillis() {
+        return remainingTimeMillis;
     }
 }
