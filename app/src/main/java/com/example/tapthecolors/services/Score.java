@@ -4,26 +4,42 @@ import android.content.Context;
 
 public class Score {
     PreferencesData preferencesData = new PreferencesData();
-
     Integer overAllScore = 0;
 
     public void updateScore(Context context, Integer score) {
-        int momentanScore = preferencesData.getInt(context, String.valueOf(score), 0);
+        // Zuerst holen wir uns den vorherigen Gesamtpunktestand aus den Einstellungen
+        int previousOverallScore = preferencesData.getInt(context, "overall_score", 0);
 
-        overAllScore += momentanScore;
+        // Berechnen der Differenz zwischen dem aktuellen Score und dem vorherigen Gesamtpunktestand
+        Integer scoreDifference = score - previousOverallScore;
 
-        preferencesData.saveInt(context, String.valueOf(score), overAllScore);
+        // Aktualisieren des Gesamtpunktestands
+        overAllScore += scoreDifference;
+
+        // Speichern des aktuellen Gesamtpunktestands
+        preferencesData.saveInt(context, "overall_score", overAllScore);
+
+        // Speichern der Differenz zwischen den Runden
+        preferencesData.saveInt(context, "score_difference", scoreDifference);
     }
 
-    public int getScore(Context context, Integer score) {
-        return preferencesData.getInt(context, String.valueOf(score), 0);
+    public int getOverallScore(Context context) {
+        // Rückgabe des aktuellen Gesamtpunktestands aus den Einstellungen
+        return preferencesData.getInt(context, "overall_score", 0);
     }
 
-    public void resetScore(Context context, Integer score) {
-        int counter = preferencesData.getInt(context, String.valueOf(score), 0);
+    public int getScoreDifference(Context context) {
+        // Rückgabe der Differenz zwischen den Runden aus den Einstellungen
+        return preferencesData.getInt(context, "score_difference", 0);
+    }
 
-        counter = 0;
+    public void resetScore(Context context) {
+        // Zurücksetzen des Gesamtpunktestands auf 0
+        overAllScore = 0;
+        preferencesData.saveInt(context, "overall_score", overAllScore);
 
-        preferencesData.saveInt(context, String.valueOf(score), counter);
+        // Zurücksetzen der Differenz zwischen den Runden auf 0
+        preferencesData.saveInt(context, "score_difference", 0);
     }
 }
+

@@ -1,5 +1,7 @@
 package com.example.tapthecolors;
 
+import static java.lang.Math.round;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
@@ -22,6 +24,7 @@ import com.example.tapthecolors.services.Counter;
 import com.example.tapthecolors.services.DemoSchwierigkeit;
 import com.example.tapthecolors.services.SchwererColorGenerator;
 import com.example.tapthecolors.services.SchwierigkeitsGrad;
+import com.example.tapthecolors.services.Score;
 import com.example.tapthecolors.services.Timer;
 
 import java.util.ArrayList;
@@ -69,14 +72,30 @@ public class SpielActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Double restZeitUebergeben = 0.0;
+
+
+        Score scoreManager = new Score();
+
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            restZeitUebergeben = extras.getDouble("restZeit");
+            Integer restZeitUebergeben = Math.toIntExact(round(extras.getDouble("restZeit", 12))); // ist immer default value
+            scoreManager.updateScore(this, restZeitUebergeben);
+
+            Log.println(Log.DEBUG, "extras", String.valueOf(extras));
+            Log.println(Log.DEBUG, "restZeitUebergeben", String.valueOf(restZeitUebergeben));
         }
-        TextView score = findViewById(R.id.textView2);
-        String stringScore = Double.toString(restZeitUebergeben);
-        score.setText(stringScore);
+
+        TextView overallScoreField = findViewById(R.id.textView);
+        TextView currentScoreField = findViewById(R.id.textView2);
+
+        String overallScore = String.valueOf(scoreManager.getOverallScore(this));
+        String scoreDifference = String.valueOf(scoreManager.getScoreDifference(this));
+
+        overallScoreField.setText(overallScore);
+        currentScoreField.setText(scoreDifference);
+
+
 
         // loop
         buttons[0] = findViewById(R.id.button);
@@ -155,6 +174,7 @@ public class SpielActivity extends AppCompatActivity {
                         zaehler.resetCounter(v.getContext(), counter);
                         startActivity(gameOverActivity);
                         timer.stopCountDown();
+                        scoreManager.resetScore(v.getContext());
 
                         Log.println(Log.DEBUG, "Farbe vergleichen falsch", hexColor + " is not equal to " + neunFarben.get(finalI));
                     }
