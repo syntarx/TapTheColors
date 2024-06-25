@@ -64,7 +64,7 @@ public class SpielActivity extends AppCompatActivity {
 
         Timer timer = new Timer(this, findViewById(R.id.textView6));
         timer.startCountDown();
-        Double restZeit = Timer.getRemainingTimeMillis();
+        // Double restZeit = Timer.getRemainingTimeMillis();
 
         this.notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -156,7 +156,7 @@ public class SpielActivity extends AppCompatActivity {
                         vibrate();
                         String counter = "my_counter";
                         zaehler.incrementCounter(v.getContext(), counter);
-                        spielActivity.putExtra("restZeit", restZeit);
+                        spielActivity.putExtra("restZeit", Timer.getRemainingTimeMillis());
                         startActivity(spielActivity);
                         int currentCounterValue = zaehler.getCounter(v.getContext(), counter);;
                         timer.stopCountDown();
