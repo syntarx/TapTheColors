@@ -4,11 +4,10 @@ import android.content.Context;
 
 public class Score {
     PreferencesData preferencesData = new PreferencesData();
-    Integer overAllScore = 0;
 
     public void updateScore(Context context, Integer score) {
         // Zuerst holen wir uns den vorherigen Gesamtpunktestand aus den Einstellungen
-        int overallScore = preferencesData.getInt(context, "overall_score", 0);
+        int overAllScore = preferencesData.getInt(context, "overall_score", 0);
 
         /*// Berechnen der Differenz zwischen dem aktuellen Score und dem vorherigen Gesamtpunktestand
         Integer scoreDifference = score - previousOverallScore;*/
@@ -35,7 +34,6 @@ public class Score {
 
     public void resetScore(Context context) {
         // Zurücksetzen des Gesamtpunktestands auf 0
-        overAllScore = 0;
         preferencesData.saveInt(context, "overall_score", 0);
 
         // Zurücksetzen der Differenz zwischen den Runden auf 0
