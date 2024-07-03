@@ -40,4 +40,3 @@ public class Score {
         preferencesData.saveInt(context, "score_difference", 0);
     }
 }
-
